@@ -28,9 +28,9 @@ export const FiscaisComponent: React.FC = () => {
             ordemEquipe.push(_iemployee[0])
         }
 
-        if (ordem) {
-            setOrdem({ ...ordem, equipe: ordemEquipe })
-        }
+        setOrdem({ ...ordem, equipe: ordemEquipe })
+
+
     }
 
 

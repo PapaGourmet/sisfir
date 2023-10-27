@@ -38,6 +38,8 @@ const NewOrderPage: React.FC = () => {
     const test = () => {
         let fields = ['tipo', 'segmento', 'unit', 'motivacao', 'local', 'inicio', 'fim', 'acao', 'integracao', 'recursos', 'equipe']
 
+        console.log(ordem)
+
         for (const key in ordem) {
             if (ordem.hasOwnProperty(key)) {
                 fields = fields.filter(x => x !== key)
@@ -127,14 +129,13 @@ const NewOrderPage: React.FC = () => {
         try {
             await service.updateOrdem(formataData(dataOS || ""), { ...ordem }, ordem.key, OS!)
             setIsLoading(false)
-            // setTimeout(() => {
-            //     refreshPage()
-            // }, 1000)
+            setTimeout(() => {
+                refreshPage()
+            }, 750)
         } catch (e) {
             setIsLoading(false)
             throw e
         }
-
 
     }
 
@@ -148,21 +149,13 @@ const NewOrderPage: React.FC = () => {
 
         ordem['timestamp'] = getLocalTimeInSaoPauloMilliseconds()
 
-
-        GetNumeroOrdem()
-            .then(async (response: any) => {
-                setIsLoading(false)
-                if (response) {
-                    await service.addOrdem(formataData(dataOS || ""), { ...ordem, key: response }, response)
-                    setTimeout(() => {
-                        refreshPage()
-                    }, 1000)
-                }
-            })
-            .catch((err) => {
-                setIsLoading(false)
-                console.log(err)
-            })
+        let numero = await service.getTotal()
+        let num = `${String(numero).padStart(4, '0')}/2023`
+        await service.addOrdem(formataData(dataOS!), { ...ordem, key: num }, num)
+        await service.setTotal()
+        setTimeout(() => {
+            refreshPage()
+        }, 750)
 
     }
 

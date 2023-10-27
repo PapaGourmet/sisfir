@@ -1,4 +1,4 @@
-import { doc, updateDoc, arrayUnion, getFirestore, getDoc } from "firebase/firestore"
+import { doc, updateDoc, arrayUnion, getFirestore, getDoc, collection, getCountFromServer, query, where, getDocs, increment } from "firebase/firestore"
 import IOrdem from "../../../interfaces/iordem"
 import IOs from "../../../interfaces/OS"
 import { IOrdemService } from "../interfaces/iordemservice"
@@ -10,10 +10,58 @@ const db = getFirestore(app)
 
 export class FirestoreOrdemService implements IOrdemService {
 
+    async setTotal(): Promise<void> {
+        const documentRef = doc(db, 'contador', '123456')
+        try {
+            await updateDoc(documentRef, {
+                ordens: increment(1)
+            })
+        } catch (e) {
+            throw e
+        }
+    }
+
+    async getTotal(): Promise<number> {
+        try {
+            const documentRef = doc(db, "contador", '123456'); // Substitua 'contador' pelo nome da coleção
+
+            const documentSnapshot = await getDoc(documentRef);
+
+            if (documentSnapshot.exists()) {
+                const data = documentSnapshot.data();
+                return data.ordens
+            } else {
+                return 0
+            }
+
+        } catch (e) {
+            throw e
+        }
+    }
+
+    async getCount(): Promise<number | undefined> {
+
+
+        try {
+            const refence = collection(db, "ordens")
+            const q = query(refence, where("ordens", "!=", null))
+            const querySnapshot = await getDocs(q)
+            console.log('oie')
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", doc.data());
+            })
+
+            return 0
+        } catch (e) {
+            throw e
+        }
+    }
+
     async addOrdem(data: string, ordem: IOrdem, numeroOrdem: any): Promise<void> {
 
         const ord: objectId = {}
         ord[numeroOrdem] = ordem
+        console.log(data)
 
         try {
             const ordemRef = doc(db, "ordens", data)

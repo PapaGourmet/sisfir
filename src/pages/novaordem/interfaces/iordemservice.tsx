@@ -6,6 +6,9 @@ export interface IOrdemService {
     addOrdem(data: string, ordem: IOrdem, numeroOrdem: any): Promise<void>
     updateOrdem(data: string, ordem: IOrdem, numeroOrdem: any, OS: IOs): Promise<void>
     getDayOrdem(data: string): Promise<any>
+    getCount(): Promise<number | undefined>
+    setTotal(): Promise<void>
+    getTotal(): Promise<number>
 }
 
 
@@ -22,5 +25,17 @@ export class OrdemService {
 
     async getDayOrdem(data: string): Promise<any> {
         return this.service.getDayOrdem(data)
+    }
+
+    async getCount(): Promise<number | undefined> {
+        return this.service.getCount()
+    }
+
+    async setTotal(): Promise<void> {
+        this.service.setTotal()
+    }
+
+    async getTotal(): Promise<number> {
+        return this.service.getTotal()
     }
 }

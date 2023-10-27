@@ -1797,6 +1797,9 @@ const GetNumeroOrdem = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, "ordens"))
             const notEmpty: any = []
+
+            const x = querySnapshot
+
             querySnapshot.forEach((doc) => {
                 if (doc.data().ordens.length > 0) {
                     notEmpty.push(doc.data().ordens.length)
