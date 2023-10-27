@@ -7,18 +7,19 @@ import { InsertItemOpcoes } from "../../../services/servicesApi"
 
 export const MotivacaoComponent: React.FC = () => {
     const { setOrdem, ordem, options } = useContext(sisfirContext)
-    const [values, setValues] = useState<{ label: string, value: string }[]>([])
+    const [values, setValues] = useState<{ label: string, value: string } | null>(null)
     const animatedComponents = makeAnimated()
 
     const handleChange = (value: any) => {
 
-        value.forEach((t: string) => {
-            setValues(pre => [...pre, createOption(t)])
-        })
+        if (value) {
+            setValues(value)
 
-        if (ordem) {
-            setOrdem({ ...ordem, motivacao: value })
+            if (ordem) {
+                setOrdem({ ...ordem, motivacao: value.label })
+            }
         }
+
     }
 
     const handleCreate = useCallback(async (inputValue: string) => {
@@ -26,13 +27,18 @@ export const MotivacaoComponent: React.FC = () => {
         await InsertItemOpcoes('motivacao', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.motivacao) {
+            setValues(createOption(ordem.motivacao || ""))
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Motivação</label>
             <CreatableSelect
                 value={values}
                 options={options.motivacao}
-                isMulti
                 isClearable
                 isSearchable
                 isDisabled={false}
@@ -43,12 +49,7 @@ export const MotivacaoComponent: React.FC = () => {
                 onCreateOption={handleCreate}
                 onChange={(item) => {
                     setValues([])
-                    const response: string[] = []
-                    item.forEach((i: any) => {
-                        response.push(i.label)
-                    })
-
-                    handleChange(response)
+                    handleChange(item)
                 }}
             />
         </div>

@@ -26,6 +26,14 @@ export const AcaoComponent: React.FC = () => {
         await InsertItemOpcoes('acao', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.acao) {
+            for (let acao of ordem.acao) {
+                setValues(pre => [...pre, createOption(acao)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Ação</label>

@@ -6,6 +6,7 @@ interface IEmployee {
     name: string;
     registry: string;
     rule: string;
+    role?: string;
     uid?: string;
     id?: string;
     mon?: boolean;

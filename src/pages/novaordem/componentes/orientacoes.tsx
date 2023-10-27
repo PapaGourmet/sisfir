@@ -15,7 +15,8 @@ export const OrientacoesComponent: React.FC = () => {
             <label>Orientações</label>
             <textarea
                 className="border rounded-lg p-2 outline-none"
-
+                rows={10}
+                value={ordem.orientacao ? ordem.orientacao : ""}
                 onChange={(item: any) => {
                     const { value } = item.target
                     handleChange(value)

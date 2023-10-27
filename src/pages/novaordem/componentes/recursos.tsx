@@ -26,6 +26,14 @@ export const RecursosComponent: React.FC = () => {
         await InsertItemOpcoes('recursos', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.recursos) {
+            for (let recurso of ordem.recursos) {
+                setValues(pre => [...pre, createOption(recurso)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Recursos</label>

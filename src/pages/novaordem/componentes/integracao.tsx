@@ -27,6 +27,14 @@ export const IntegracaoComponent: React.FC = () => {
         await InsertItemOpcoes('integracao', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.integracao) {
+            for (let integracao of ordem.integracao) {
+                setValues(pre => [...pre, createOption(integracao)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Integracao</label>

@@ -14,6 +14,7 @@ export const InicioComponent: React.FC = () => {
         <div className="flex flex-col w-full">
             <label>Início</label>
             <input
+                value={ordem.inicio ? ordem.inicio : ""}
                 type="time"
                 className="border rounded-lg p-2 outline-none"
                 onChange={(item: any) => {

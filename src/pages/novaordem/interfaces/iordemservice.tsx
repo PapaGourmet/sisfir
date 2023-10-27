@@ -5,7 +5,7 @@ import IOrdem from "../../../interfaces/iordem";
 export interface IOrdemService {
     addOrdem(data: string, ordem: IOrdem, numeroOrdem: any): Promise<void>
     updateOrdem(data: string): Promise<void>
-    getDayOrdem(data: string): Promise<IOs>
+    getDayOrdem(data: string): Promise<IOrdem[]>
 }
 
 
@@ -20,7 +20,7 @@ export class OrdemService {
         this.service.updateOrdem(data)
     }
 
-    async getDayOrdem(data: string): Promise<IOs> {
-        return this.getDayOrdem(data)
+    async getDayOrdem(data: string): Promise<IOrdem[]> {
+        return this.service.getDayOrdem(data)
     }
 }

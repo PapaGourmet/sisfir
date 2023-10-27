@@ -30,6 +30,14 @@ export const UnidadesComponent: React.FC = () => {
         await InsertItemOpcoes('unidades', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.unit) {
+            for (let unidade of ordem.unit) {
+                setValues(pre => [...pre, createOption(unidade)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Unidade</label>

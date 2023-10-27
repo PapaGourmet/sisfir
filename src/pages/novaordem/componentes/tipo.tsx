@@ -13,7 +13,20 @@ export const TipoComponent: React.FC = () => {
     return (
         <div className="flex flex-col w-full">
             <label>TIPO</label>
-            <select
+            {ordem.tipo && <select
+                className="border h-10 rounded-lg p-2 outline-none"
+                value={ordem.tipo}
+                onChange={(item: any) => {
+                    const { value } = item.target
+                    handleChange(value)
+                }}
+            >
+                <option className='text-slate-100' value="tipo" disabled>selecione ...</option>
+                <option value={'ordinária'}>ordinária</option>
+                <option value={'extraordinária'}>extraordinária</option>
+            </select>}
+
+            {!ordem.tipo && <select
                 className="border h-10 rounded-lg p-2 outline-none"
                 defaultValue={"tipo"}
                 onChange={(item: any) => {
@@ -24,7 +37,7 @@ export const TipoComponent: React.FC = () => {
                 <option className='text-slate-100' value="tipo" disabled>selecione ...</option>
                 <option value={'ordinária'}>ordinária</option>
                 <option value={'extraordinária'}>extraordinária</option>
-            </select>
+            </select>}
         </div>
     )
 }

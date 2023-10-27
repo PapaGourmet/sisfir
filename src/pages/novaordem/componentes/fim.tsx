@@ -14,6 +14,7 @@ export const FimComponent: React.FC = () => {
         <div className="flex flex-col w-full">
             <label>Fim</label>
             <input
+                value={ordem.fim ? ordem.fim : ""}
                 type="time"
                 className="border rounded-lg p-2 outline-none"
                 onChange={(item: any) => {

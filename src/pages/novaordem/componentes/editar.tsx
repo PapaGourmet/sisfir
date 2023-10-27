@@ -2,24 +2,53 @@ import React, { useCallback, useContext, useState } from "react"
 import { sisfirContext } from "../../../context/sisfircontext"
 import makeAnimated from 'react-select/animated'
 import { createOption } from "../../ordem/create/util"
-import Select from 'react-select'
+import { formataData, notify } from "./util"
+import { OrdemService } from "../interfaces/iordemservice"
+import { FirestoreOrdemService } from "../services/firestoreordemservice"
+import IOs from "../../../interfaces/OS"
+import IOrdem from "../../../interfaces/iordem"
+const _service = new FirestoreOrdemService()
+const service = new OrdemService(_service)
 
-export const EditarComponent: React.FC = () => {
-    const { setOrdem, ordem } = useContext(sisfirContext)
-    const [values, setValues] = useState<{ label: string, value: string }[]>([])
+interface EditarComponentProps {
+    setShowForm: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+
+export const EditarComponent: React.FC<EditarComponentProps> = ({ setShowForm }) => {
+    const { setOrdem, setDataOS } = useContext(sisfirContext)
+    const [ordens, setOrdens] = useState<IOrdem[]>([])
     const animatedComponents = makeAnimated()
 
-    const handleChange = (value: any) => {
+    const handleChange = async (value: any): Promise<void> => {
+        setDataOS(value)
+        setOrdem({})
+        setOrdens([])
+        setShowForm(false)
 
-        value.forEach((t: string) => {
-            setValues(pre => [...pre, createOption(t)])
-        })
+        if (value) {
+            const dt = formataData(value)
 
-        if (ordem) {
-            setOrdem({ ...ordem, integracao: value })
+            try {
+                const response: IOrdem[] = await service.getDayOrdem(dt)
+                if (response) {
+                    setOrdens(response)
+                }
+            } catch (e) {
+                throw e
+            }
+
+        } else {
+            notify('Informe a data para prosseguir')
+            return
         }
     }
 
+    const handleSelect = (key: any): void => {
+        const ord = ordens.filter((x: IOrdem) => x.key === key)[0]
+        setOrdem(ord)
+        setShowForm(true)
+    }
 
     return (
 
@@ -45,18 +74,16 @@ export const EditarComponent: React.FC = () => {
                     defaultValue={"tipo"}
                     onChange={(item: any) => {
                         const { value } = item.target
-                        handleChange(value)
+                        handleSelect(value)
                     }}
                 >
                     <option className='text-slate-100' value="tipo" disabled>selecione ...</option>
+                    {
+                        ordens.map((ordem: IOrdem) => (
+                            <option key={ordem.key} value={ordem.key}>{ordem.key}</option>
+                        ))
+                    }
                 </select>
-            </div>
-
-            <div className="flex flex-col w-full items-center justify-center mt-10">
-                <button
-                    className="h-20 w-20 bg-blue-900 hover:bg-blue-600 text-white rounded-full"
-                >COPIAR
-                </button>
             </div>
         </div>
 

@@ -58,6 +58,15 @@ export const FiscaisComponent: React.FC = () => {
 
     }, [equipes])
 
+    useEffect(() => {
+        if (ordem.equipe) {
+            for (let equipe of ordem.equipe) {
+                const label = `${equipe.name} (${equipe.role}) (${equipe.unit}) (${equipe.type})`
+                setValues(pre => [...pre, createOption(label)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="w-full">
             <div className="flex flex-row w-full gap-x-8">

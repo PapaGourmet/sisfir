@@ -22,6 +22,7 @@ import { OrdemService } from "./interfaces/iordemservice"
 import { CopiarComponent } from "./componentes/copiar"
 import { IntegracaoComponent } from "./componentes/integracao"
 import { EditarComponent } from "./componentes/editar"
+import { faBullseye } from "@fortawesome/free-solid-svg-icons"
 const _service = new FirestoreOrdemService()
 const service = new OrdemService(_service)
 
@@ -109,7 +110,11 @@ const NewOrderPage: React.FC = () => {
                 setIsLoading(false)
                 if (response) {
                     await service.addOrdem(formataData(dataOS || ""), { ...ordem, key: response }, response)
-                    refreshPage()
+                    //refreshPage()
+                    setOrdem({})
+                    setEquipes([])
+                    setDataOS(null)
+                    //setShowForm(false)
                 }
             })
             .catch((err) => {
@@ -126,6 +131,8 @@ const NewOrderPage: React.FC = () => {
     const handTypeOperation = (type: string) => {
         switch (type) {
             case 'criar':
+                setOrdem({})
+                setDataOS(null)
                 setShowForm(true)
                 setShowCopy(false)
                 setShowEdit(false)
@@ -173,7 +180,7 @@ const NewOrderPage: React.FC = () => {
             </div>}
 
             {showEdit && <div className="flex flex-col px-8 mt-4">
-                <EditarComponent />
+                <EditarComponent setShowForm={setShowForm} />
             </div>}
 
 

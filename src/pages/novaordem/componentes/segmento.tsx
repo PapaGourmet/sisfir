@@ -30,6 +30,14 @@ export const SegmentoComponent: React.FC = () => {
         await InsertItemOpcoes('segmento', inputValue)
     }, [])
 
+    useEffect(() => {
+        if (ordem.segmento) {
+            for (let segmento of ordem.segmento) {
+                setValues(pre => [...pre, createOption(segmento)])
+            }
+        }
+    }, [ordem])
+
     return (
         <div className="flex flex-col w-full">
             <label>Segmento</label>
