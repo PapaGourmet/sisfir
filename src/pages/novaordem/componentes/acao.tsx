@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { sisfirContext } from "../../../context/sisfircontext"
 import CreatableSelect from "react-select/creatable"
 import makeAnimated from 'react-select/animated'
-import { createOption } from "./util"
+import { createOption, removerElementosRepetidos } from "./util"
 import { InsertItemOpcoes } from "../../../services/servicesApi"
 
 export const AcaoComponent: React.FC = () => {
@@ -17,7 +17,7 @@ export const AcaoComponent: React.FC = () => {
         })
 
         if (ordem) {
-            setOrdem({ ...ordem, acao: value })
+            setOrdem({ ...ordem, acao: removerElementosRepetidos(value) })
         }
     }
 

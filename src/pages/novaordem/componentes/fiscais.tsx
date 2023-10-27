@@ -4,7 +4,7 @@ import IEmployee from "../../../interfaces/iemployee"
 import { InsertItemOpcoes } from "../../../services/servicesApi"
 import { createOption } from "./util"
 import makeAnimated from 'react-select/animated'
-import CreatableSelect from "react-select/creatable"
+import Select from "react-select"
 import { OrientacoesComponent } from "./orientacoes"
 
 export const FiscaisComponent: React.FC = () => {
@@ -33,16 +33,6 @@ export const FiscaisComponent: React.FC = () => {
         }
     }
 
-    const handleCreate = useCallback(async (inputValue: string) => {
-        const newOption = createOption(inputValue)
-        await InsertItemOpcoes('acao', inputValue)
-    }, [])
-
-    const handleChangeOrientacoes = (value: any) => {
-        if (ordem) {
-            setOrdem({ ...ordem, local: value })
-        }
-    }
 
     const handleToggleShow = () => {
         setShow(!show)
@@ -72,7 +62,7 @@ export const FiscaisComponent: React.FC = () => {
             <div className="flex flex-row w-full gap-x-8">
                 <div className="flex flex-col w-11/12">
                     <label>Fiscais</label>
-                    <CreatableSelect
+                    <Select
                         value={values}
                         options={options}
                         isMulti
@@ -83,7 +73,6 @@ export const FiscaisComponent: React.FC = () => {
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         placeholder={"selecione ..."}
-                        onCreateOption={handleCreate}
                         onChange={(item) => {
                             setValues([])
                             const response: string[] = []

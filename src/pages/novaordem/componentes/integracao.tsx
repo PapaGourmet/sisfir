@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { sisfirContext } from "../../../context/sisfircontext"
 import CreatableSelect from "react-select/creatable"
 import makeAnimated from 'react-select/animated'
-import { createOption } from "./util"
+import { createOption, removerElementosRepetidos } from "./util"
 import { InsertItemOpcoes } from "../../../services/servicesApi"
 
 export const IntegracaoComponent: React.FC = () => {
@@ -18,7 +18,7 @@ export const IntegracaoComponent: React.FC = () => {
         })
 
         if (ordem) {
-            setOrdem({ ...ordem, integracao: value })
+            setOrdem({ ...ordem, integracao: removerElementosRepetidos(value) })
         }
     }
 

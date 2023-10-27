@@ -23,11 +23,12 @@ import { CopiarComponent } from "./componentes/copiar"
 import { IntegracaoComponent } from "./componentes/integracao"
 import { EditarComponent } from "./componentes/editar"
 import { faBullseye } from "@fortawesome/free-solid-svg-icons"
+import Loading from "../../bundles/loading/loading"
 const _service = new FirestoreOrdemService()
 const service = new OrdemService(_service)
 
 const NewOrderPage: React.FC = () => {
-    const { setOrdem, ordem, dataOS, setDataOS, setEquipes } = useContext(sisfirContext)
+    const { setOrdem, ordem, dataOS, setDataOS, setEquipes, OS } = useContext(sisfirContext)
     const [isLoading, setIsLoading] = useState(false)
     const [showForm, setShowForm] = useState(false)
     const [showCopy, setShowCopy] = useState(false)
@@ -94,44 +95,10 @@ const NewOrderPage: React.FC = () => {
         }
     }
 
-    const handleSave = async () => {
-
-        test()
-
-        if (dataOS) {
-            ordem['dataOrdem'] = dataOS
-        }
-
-        ordem['timestamp'] = getLocalTimeInSaoPauloMilliseconds()
-
-
-        GetNumeroOrdem()
-            .then(async (response: any) => {
-                setIsLoading(false)
-                if (response) {
-                    await service.addOrdem(formataData(dataOS || ""), { ...ordem, key: response }, response)
-                    //refreshPage()
-                    setOrdem({})
-                    setEquipes([])
-                    setDataOS(null)
-                    //setShowForm(false)
-                }
-            })
-            .catch((err) => {
-                setIsLoading(false)
-                console.log(err)
-            })
-
-
-        console.log(ordem)
-
-
-    }
-
     const handTypeOperation = (type: string) => {
         switch (type) {
             case 'criar':
-                setOrdem({})
+                setOrdem({ status: true })
                 setDataOS(null)
                 setShowForm(true)
                 setShowCopy(false)
@@ -155,9 +122,52 @@ const NewOrderPage: React.FC = () => {
         }
     }
 
+    const handleUpdate = async () => {
+        setIsLoading(true)
+        try {
+            await service.updateOrdem(formataData(dataOS || ""), { ...ordem }, ordem.key, OS!)
+            setIsLoading(false)
+            // setTimeout(() => {
+            //     refreshPage()
+            // }, 1000)
+        } catch (e) {
+            setIsLoading(false)
+            throw e
+        }
+
+
+    }
+
+    const handleSave = async () => {
+
+        test()
+
+        if (dataOS) {
+            ordem['dataOrdem'] = dataOS
+        }
+
+        ordem['timestamp'] = getLocalTimeInSaoPauloMilliseconds()
+
+
+        GetNumeroOrdem()
+            .then(async (response: any) => {
+                setIsLoading(false)
+                if (response) {
+                    await service.addOrdem(formataData(dataOS || ""), { ...ordem, key: response }, response)
+                    setTimeout(() => {
+                        refreshPage()
+                    }, 1000)
+                }
+            })
+            .catch((err) => {
+                setIsLoading(false)
+                console.log(err)
+            })
+
+    }
+
     return (
         <main>
-
             <div className="flex flex-col px-8 mt-4">
                 <label>Operação</label>
                 <select
@@ -246,7 +256,7 @@ const NewOrderPage: React.FC = () => {
                     <FiscaisComponent />
                 </div>
 
-                <div className="w-full flex items-center justify-center mt-4 mb-[25rem]">
+                {showForm && !showEdit && <div className="w-full flex items-center justify-center mt-4 mb-[25rem]">
                     <button
                         className="h-20 w-20 rounded-full bg-blue-800 hover:bg-blue-600 text-white outline-none"
                         onClick={() => {
@@ -255,10 +265,25 @@ const NewOrderPage: React.FC = () => {
                     >
                         Salvar
                     </button>
-                </div>
+                </div>}
+
+
+                {showEdit && <div className="w-full flex items-center justify-center mt-4 mb-[25rem]">
+                    <button
+                        className="h-20 w-20 rounded-full bg-blue-800 hover:bg-blue-600 text-white outline-none"
+                        onClick={() => {
+                            handleUpdate()
+                        }}
+                    >
+                        Atualizar
+                    </button>
+                </div>}
             </div>}
 
             <ToastContainer />
+            {isLoading && <div className="flex items-center justify-center">
+                <Loading />
+            </div>}
         </main>
     )
 }

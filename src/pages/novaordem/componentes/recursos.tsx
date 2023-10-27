@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { sisfirContext } from "../../../context/sisfircontext"
 import CreatableSelect from "react-select/creatable"
 import makeAnimated from 'react-select/animated'
-import { createOption } from "./util"
+import { createOption, removerElementosRepetidos } from "./util"
 import { InsertItemOpcoes } from "../../../services/servicesApi"
 
 export const RecursosComponent: React.FC = () => {
@@ -17,7 +17,7 @@ export const RecursosComponent: React.FC = () => {
         })
 
         if (ordem) {
-            setOrdem({ ...ordem, recursos: value })
+            setOrdem({ ...ordem, recursos: removerElementosRepetidos(value) })
         }
     }
 
@@ -39,7 +39,7 @@ export const RecursosComponent: React.FC = () => {
             <label>Recursos</label>
             <CreatableSelect
                 value={values}
-                options={options.acao}
+                options={options.recursos}
                 isMulti
                 isClearable
                 isSearchable

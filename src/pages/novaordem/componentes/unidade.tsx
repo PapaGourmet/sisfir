@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react"
 import { sisfirContext } from "../../../context/sisfircontext"
 import CreatableSelect from "react-select/creatable"
 import makeAnimated from 'react-select/animated'
-import { createOption } from "./util"
+import { createOption, removerElementosRepetidos } from "./util"
 import { InsertItemOpcoes } from "../../../services/servicesApi"
 import { set } from "firebase/database"
 
@@ -21,7 +21,7 @@ export const UnidadesComponent: React.FC = () => {
         })
 
         if (ordem) {
-            setOrdem({ ...ordem, unit: value })
+            setOrdem({ ...ordem, unit: removerElementosRepetidos(value) })
         }
     }
 

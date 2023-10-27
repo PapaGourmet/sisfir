@@ -18,6 +18,8 @@ export class FirestoreOrdemService implements IOrdemService {
         try {
             const ordemRef = doc(db, "ordens", data)
 
+            console.log(ord)
+
             await updateDoc(ordemRef, {
                 ordens: arrayUnion(ord)
             })
@@ -28,11 +30,40 @@ export class FirestoreOrdemService implements IOrdemService {
     }
 
 
-    async updateOrdem(data: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateOrdem(data: string, ordem: IOrdem, numeroOrdem: any, OS: IOs): Promise<void> {
+
+        const ord: objectId = {}
+        ord[numeroOrdem] = ordem
+
+        try {
+
+            const ordemRef = doc(db, "ordens", data)
+
+            const aux: any[] = []
+
+            for (const i of OS.ordens!) {
+                const key = Object.keys(i)[0]
+                aux.push(key)
+            }
+
+            const index = aux.indexOf(numeroOrdem)
+
+            const novaLista = [
+                ...OS.ordens!.slice(0, index), // Copie os objetos antes do índice
+                ord, // Adicione o novo objeto
+                ...OS.ordens!.slice(index! + 1), // Copie os objetos após o índice
+            ]
+
+            await updateDoc(ordemRef, {
+                ordens: novaLista
+            })
+
+        } catch (e) {
+            throw e
+        }
     }
 
-    async getDayOrdem(data: string): Promise<IOrdem[]> {
+    async getDayOrdem(data: string): Promise<any> {
 
         try {
             const ordensRef = doc(db, "ordens", data)
@@ -40,6 +71,7 @@ export class FirestoreOrdemService implements IOrdemService {
             const infos: any = docSnap.data()
 
             const ordens = infos!['ordens']
+
             const dados: IOrdem[] = []
             ordens
                 .forEach((x: any) => {
@@ -73,7 +105,13 @@ export class FirestoreOrdemService implements IOrdemService {
 
                 })
 
-            return dados.filter((x: IOrdem) => x.status)
+
+            const context: any = {
+                OS: infos,
+                ordens: dados.filter((x: IOrdem) => x.status)
+            }
+
+            return context
 
         } catch (e) {
             throw e

@@ -48,7 +48,7 @@ export const MotivacaoComponent: React.FC = () => {
                 placeholder={"selecione ..."}
                 onCreateOption={handleCreate}
                 onChange={(item) => {
-                    setValues([])
+                    setValues(null)
                     handleChange(item)
                 }}
             />

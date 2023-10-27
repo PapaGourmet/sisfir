@@ -56,3 +56,9 @@ export function ordenaListaRelatoresGroup(lista: string[]): string[] {
     })
 }
 
+
+export function removerElementosRepetidos(lista: string[]): string[] {
+    const conjunto = new Set<string>(lista);
+    return [...conjunto];
+}
+

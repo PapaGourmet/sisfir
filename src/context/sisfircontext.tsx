@@ -42,6 +42,7 @@ export const SisfirProvider = ({ children }: MegaProps) => {
         GetOpcoes()
             .then(response => {
                 setOptions(response)
+                console.log(response)
             })
             .catch((e) => {
                 throw e

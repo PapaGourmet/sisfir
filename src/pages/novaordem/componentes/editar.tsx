@@ -16,7 +16,7 @@ interface EditarComponentProps {
 
 
 export const EditarComponent: React.FC<EditarComponentProps> = ({ setShowForm }) => {
-    const { setOrdem, setDataOS } = useContext(sisfirContext)
+    const { setOrdem, setDataOS, setOS } = useContext(sisfirContext)
     const [ordens, setOrdens] = useState<IOrdem[]>([])
     const animatedComponents = makeAnimated()
 
@@ -30,9 +30,12 @@ export const EditarComponent: React.FC<EditarComponentProps> = ({ setShowForm })
             const dt = formataData(value)
 
             try {
-                const response: IOrdem[] = await service.getDayOrdem(dt)
+                const response: any = await service.getDayOrdem(dt)
                 if (response) {
-                    setOrdens(response)
+                    console.log(response.ordens)
+                    setOrdens(response.ordens)
+                    console.log(response.OS)
+                    setOS(response.OS)
                 }
             } catch (e) {
                 throw e
