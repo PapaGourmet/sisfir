@@ -1,0 +1,14 @@
+{
+    "web": {
+        "client_id": "522706837997-6c8pdr00clqkj75jrj63adrd2h6a2d4h.apps.googleusercontent.com",
+        "project_id": "fcz-cacambas",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "javascript_origins": [
+            "http://127.0.0.1:5173",
+            "https://fcz-cacambas.web.app"
+        ]
+    }
+}

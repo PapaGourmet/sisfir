@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .alerta {
+        color: crimson;
+        font-size: small;
+    }
+}
