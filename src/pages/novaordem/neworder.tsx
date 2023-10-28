@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { sisfirContext } from "../../context/sisfircontext"
 import { MotivacaoComponent } from "./componentes/motivacao"
 import { SegmentoComponent } from "./componentes/segmento"

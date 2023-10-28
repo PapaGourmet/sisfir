@@ -9,7 +9,6 @@ import Login from './pages/login/login'
 import Unauthorized from './bundles/errors/unauthorized'
 import ErrorPage from './bundles/errors/error-page'
 import Noverified from './bundles/errors/noverified'
-import Ordem from './pages/ordem/create/create'
 import { QueryClient, QueryClientProvider } from "react-query";
 import ManageOrdem from './pages/ordem/manage/manage'
 import EditOrdem from './pages/ordem/edit/edit'
@@ -51,11 +50,6 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-
-      {
-        path: "/novaordem",
-        element: <SisfirProvider><NewOrderPage /></SisfirProvider>
-      },
 
 
       {
@@ -99,7 +93,7 @@ const router = createBrowserRouter([
 
       {
         path: "ordem/criar",
-        element: <Ordem />,
+        element: <SisfirProvider><NewOrderPage /></SisfirProvider>
       },
 
       {

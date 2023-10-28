@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, startTransition } from 'react'
 import { FadeIn } from 'react-slide-fade-in'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBurger } from '@fortawesome/free-solid-svg-icons'
@@ -37,76 +37,77 @@ function App() {
 
   const dataUser = () => {
 
-    const auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    startTransition(() => {
+      const auth = getAuth()
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
 
-        const uid = user.uid
-        setUser(user)
-        setShowburger(true)
+          const uid = user.uid
+          setUser(user)
+          setShowburger(true)
 
-        GetUser(user.uid)
-          .then(data => {
-            const objectId = Object.keys(data.data)[0]
-            if (objectId) {
-              const { email, rules } = data.data[objectId]
-              setUser(email)
+          GetUser(user.uid)
+            .then(data => {
+              const objectId = Object.keys(data.data)[0]
+              if (objectId) {
+                const { email, rules } = data.data[objectId]
+                setUser(email)
 
-              let str = ''
-              rules.forEach((x: any, a: any, b: any) => {
-                if (a < b.length - 1) {
-                  str += `${x},`
-                } else {
-                  str += x
+                let str = ''
+                rules.forEach((x: any, a: any, b: any) => {
+                  if (a < b.length - 1) {
+                    str += `${x},`
+                  } else {
+                    str += x
+                  }
+                })
+                setRules(str)
+                let index = rules.indexOf('admin')
+                if (index !== -1) {
+                  setIsAdmin(true)
+                  localStorage.setItem('admin', "verdadeiro")
                 }
-              })
-              setRules(str)
-              let index = rules.indexOf('admin')
-              if (index !== -1) {
-                setIsAdmin(true)
-                localStorage.setItem('admin', "verdadeiro")
+
+                index = rules.indexOf('caçambas')
+
+                if (index !== -1) {
+                  setIsCacambas(true)
+                }
+
+                index = rules.indexOf('gerente')
+
+                if (index !== -1) {
+                  setIsGerente(true)
+                }
+
+                index = rules.indexOf('nao')
+
+                if (index !== -1) {
+                  setIsNAO(true)
+                  localStorage.setItem('nao', "verdadeiro")
+                }
+
+                index = rules.indexOf('controlador')
+
+                if (index !== -1) {
+                  setIsControlador(true)
+                }
+
+                index = rules.indexOf('monitor')
+
+                if (index !== -1) {
+                  setIsMonitor(true)
+                }
               }
+            })
 
-              index = rules.indexOf('caçambas')
-
-              if (index !== -1) {
-                setIsCacambas(true)
-              }
-
-              index = rules.indexOf('gerente')
-
-              if (index !== -1) {
-                setIsGerente(true)
-              }
-
-              index = rules.indexOf('nao')
-
-              if (index !== -1) {
-                setIsNAO(true)
-                localStorage.setItem('nao', "verdadeiro")
-              }
-
-              index = rules.indexOf('controlador')
-
-              if (index !== -1) {
-                setIsControlador(true)
-              }
-
-              index = rules.indexOf('monitor')
-
-              if (index !== -1) {
-                setIsMonitor(true)
-              }
-            }
-          })
-
-      } else {
-        if (pathname !== '/login') {
-          navigate('/unauthorized')
+        } else {
+          if (pathname !== '/login') {
+            navigate('/unauthorized')
+          }
         }
-      }
+      })
     })
-
   }
 
   const logout = () => {

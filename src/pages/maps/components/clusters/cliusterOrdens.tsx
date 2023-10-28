@@ -106,7 +106,7 @@ const ClusterOrdens: React.FC<IClusterOrdensProps> = ({ }) => {
                             <>
                                 {refOrdens.current
                                     .filter((x: IOrdem) => x.geocode && x.status)
-                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem))
+                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem!))
                                     .map((l: IOrdem, index) => (
                                         <Marker
                                             key={l.geocode!.lat + '-' + l!.key}
@@ -126,7 +126,7 @@ const ClusterOrdens: React.FC<IClusterOrdensProps> = ({ }) => {
                             <>
                                 {refOrdens.current
                                     .filter((x: IOrdem) => x.geocode && x.status)
-                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem))
+                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem!))
                                     .filter((x: IOrdem) => x.segmento?.includes('Grande Gerador'))
                                     .map((l: IOrdem, index) => (
                                         <Marker
@@ -148,7 +148,7 @@ const ClusterOrdens: React.FC<IClusterOrdensProps> = ({ }) => {
                             <>
                                 {refOrdens.current
                                     .filter((x: IOrdem) => x.geocode && x.status)
-                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem))
+                                    .filter((x: IOrdem) => generateDateList(dates).includes(x.dataOrdem!))
                                     .filter((x: IOrdem) => x.segmento?.includes('Lixo Zero'))
                                     .map((l: IOrdem, index) => (
                                         <Marker

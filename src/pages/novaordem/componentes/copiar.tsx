@@ -10,6 +10,7 @@ import IOrdem from "../../../interfaces/iordem"
 import objectId from "../../../interfaces/objectId"
 import Loading from "../../../bundles/loading/loading"
 import { GetNumeroOrdem } from "../../../services/servicesApi"
+import { getLocalTimeInSaoPauloMilliseconds } from "../../maps/utils/utils"
 
 const _service = new FirestoreOrdemService()
 const service = new OrdemService(_service)
@@ -58,9 +59,6 @@ export const CopiarComponent: React.FC = () => {
 
     const handleCopy = async () => {
         const toSend: IOrdem[] = []
-
-        console.log(Para)
-
         const aux: any[] = []
 
         for (const ord of toCopy) {
@@ -81,7 +79,7 @@ export const CopiarComponent: React.FC = () => {
                     let numero = await service.getTotal()
                     let num = `${String(numero).padStart(4, '0')}/2023`
                     print(num)
-                    await service.addOrdem(Para!, aux[count], num)
+                    await service.addOrdem(formataData(Para!), { ...aux[count], dataOrdem: Para!, timestamp: getLocalTimeInSaoPauloMilliseconds() }, num)
                     await service.setTotal()
 
                     count++
@@ -103,8 +101,6 @@ export const CopiarComponent: React.FC = () => {
         }, 750)
 
     }
-
-
 
     useEffect(() => {
         if (OS) {
@@ -144,7 +140,7 @@ export const CopiarComponent: React.FC = () => {
                     type="date"
                     onChange={(item: any) => {
                         const { value } = item.target
-                        setPara(formataData(value))
+                        setPara(value)
                     }}
                 >
                 </input>
@@ -186,8 +182,6 @@ export const CopiarComponent: React.FC = () => {
                     <Loading />
                 </div>
             }
-
-            <pre>{De} - {Para}</pre>
         </div>
 
 
